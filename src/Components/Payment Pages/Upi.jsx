@@ -15,12 +15,12 @@ const Upi = () => {
 
     const [update , setUpdate] = useState(0)
     useEffect(() => {
-        console.log(update);
+        // console.log(update);
     },[update]);
   return (
     <App >
-        <Box border={'1px solid #ddd'} padding={3} borderRadius={'8px'}>
         <Heading/>
+        <Box border={'1px solid #ddd'} padding={5} borderRadius={'8px'}>
           <Input
           placeholder='E.g: 1234567890@.upi'
           />

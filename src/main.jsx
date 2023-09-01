@@ -6,6 +6,8 @@ import { ChakraProvider } from '@chakra-ui/react'
 import Upi from './Components/Payment Pages/Upi.jsx'
 import { LeftComponent } from './Components/LeftComponent.jsx'
 import Redirect from './Components/Payment Pages/Redirect.jsx'
+import { Bank } from './Components/Payment Pages/Bank.jsx'
+import Wallet from './Components/Payment Pages/Wallet.jsx'
 
 
 const router = createBrowserRouter([
@@ -20,6 +22,14 @@ const router = createBrowserRouter([
   {
     path:"/upi",
     element:<Upi/>
+  },
+  {
+    path:"/bank",
+    element:<Bank/>
+  },
+  {
+    path:"/wallet",
+    element:<Wallet/>
   }
 ])
 
