@@ -1,7 +1,10 @@
 import { Box, Center, Container, Flex, HStack, Stack, Text } from '@chakra-ui/react'
-import React, { useEffect } from 'react'
+import React, { createContext, useEffect } from 'react'
 import { LeftComponent } from './Components/LeftComponent'
 import { RightComponent } from './Components/RightComponent'
+
+
+export const RightComData = createContext()
 
 const App = ({ children }) => {
 
@@ -13,7 +16,9 @@ const App = ({ children }) => {
                     <Box display={'flex'} flexDir={'column'} flex={'1'}>
                         {children}
                     </Box>
+                    
                     <RightComponent />
+                    
                 </Box>
             </Container>
         </Box>
