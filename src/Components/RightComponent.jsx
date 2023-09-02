@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Card, Image, Stack, Text } from '@chakra-ui/react';
 import { faAngleDown, faBank, faBars, faBuildingColumns, faCreditCard, faForward, faWallet } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useCardDetails } from '../Hooks/Hook';
+
 
 export const RightComponent = () => {
 
+  const [selectOption, setSelectOption] = useState('');
   const [showIcon, setShowIcon] = useState(false);
   const [openClose , setOpenClose] = useState(false)
-  const {setTopcard,topCard} = useCardDetails();
-  
+  const [ topCard , setTopcard] = useState({})
+  const navigate = useNavigate()
+   
+
+
   useEffect(() => {
     // Function to handle window resize event
     const handleResize = () => {
@@ -20,10 +24,14 @@ export const RightComponent = () => {
         setShowIcon(false);
         setOpenClose(true)
       }
-    };    
+    };
+
+    
     window.addEventListener('resize', handleResize);
 
+    
     handleResize();
+
     
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -31,6 +39,35 @@ export const RightComponent = () => {
   }, []);
 
   
+
+
+
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if(location.pathname==='/card'){
+      setTopcard({name:'Card',logo:faCreditCard})
+      setSelectOption(location.pathname)
+    }
+    if(location.pathname==='/upi'){
+      setTopcard({name:'UPI',logo:faForward})
+      setSelectOption(location.pathname)
+    }
+    if(location.pathname==='/wallet'){
+      setTopcard({name:'Wallet',logo:faWallet})
+      setSelectOption(location.pathname)
+    }
+    if(location.pathname==='/bank'){
+      setTopcard({name:'Bank',logo:faBank})
+      setSelectOption(location.pathname)
+    }
+   
+  }, [location]);
+
+
+
+ 
 
 
   return (
@@ -42,11 +79,12 @@ export const RightComponent = () => {
         backgroundRepeat={'no-repeat'}
         display={'flex'}
         alignItems={'center'}
+        justifyContent={'center'}
         borderRadius={'10px 10px 0 0'}
         position={'relative'}
         boxShadow={'xl'}
       >
-        <Text color={'white'} fontWeight={'semibold'} fontSize={'24px'} justify={'center'} ml={'20%'}>
+        <Text color={'white'} fontWeight={'semibold'} fontSize={'24px'} align={'center'}  ml={"8%"} mr={'8%'} >
           Subscribe and start saving your money today
         </Text>
         <Box bg={'white'} minW={'auto'} position={'absolute'} bottom={0} left={'50px'} height={'60px'} mb={'-7%'} right={'50px'} padding={'8px'} overflow={'hidden'} borderRadius={'8px'} display={'flex'}>
@@ -71,9 +109,9 @@ export const RightComponent = () => {
           <Box>
             <>
               <Card
-                
-               display={showIcon ? "flex" : 'none'}
+                display={showIcon?'flex':'none'}
                 justify={'space-between'}
+                
                 flexDir={'row'}
                 p={2}
                 mt={8}
@@ -84,19 +122,21 @@ export const RightComponent = () => {
                 
               >
                 <Box width={'300px'} display={'flex'} alignItems={'center'}>
-                <FontAwesomeIcon icon={ topCard.logo ?? faCreditCard} />
+                <FontAwesomeIcon icon={topCard?.logo ?? faCreditCard} />
                 <Text ml={'10%'} fontWeight={'semibold'} color={'gray.500'}>
-                  {topCard.name ?? "Card"}
+                  {topCard?.name??"Card"}
                 </Text>
                 </Box>
                <Box display={'flex'} alignItems={'center'}>
-                
+               {showIcon && (
              <FontAwesomeIcon
                onClick={()=>setOpenClose(!openClose)}
+               
                fontSize={'20px'}
+               style={{}}
                icon={faBars}
              />
-              
+              )}
                </Box>
               </Card>
             </>
@@ -105,19 +145,21 @@ export const RightComponent = () => {
 
         <Box display={openClose ? 'block' : 'none'}>
         <Box>
-           
+            
               <Card
-                onClick={()=>setTopcard({name:'Card',logo:faCreditCard})}
-                border={topCard.name==="Card" ? '1px solid blue' : "none"}
                 display={'flex'}
                 justify={'space-between'}
+                
                 flexDir={'row'}
                 p={2}
                 mt={8}
                 alignItems={'center'}
                 position={'relative'}
-                
-                
+                onClick={() => {
+                 navigate('/card')}}
+                style={{
+                  border: selectOption === '/card' ? '1px solid blue' : 'none',
+                }}
               >
                 <Box width={'300px'} display={'flex'} alignItems={'center'}>
                 <FontAwesomeIcon icon={faCreditCard} />
@@ -131,49 +173,57 @@ export const RightComponent = () => {
               </Card>
             
           </Box>
-        
+      
           <Card
-          onClick={()=>setTopcard({name:'UPI',logo:faForward})}
-          border={topCard.name==="UPI" ? '1px solid blue' : "none"}
             display={'flex'}
             flexDir={'row'}
             p={2}
             mt={4}
             alignItems={'center'}
-            
-            
-            
+            style={{
+              border: selectOption === '/upi' ? '1px solid blue' : 'none',
+            }}
+            onClick={() => {
+            navigate('/upi')
+          }}
           >
             <FontAwesomeIcon icon={faForward} />
             <Text ml={'10%'} fontWeight={'semibold'} color={'gray.500'}>
               UPI
             </Text>
           </Card>
-
+       
           <Card
-            onClick={()=>setTopcard({name:'Wallet',logo:faWallet})}
-            border={topCard.name==="Wallet" ? '1px solid blue' : "none"}
             display={'flex'}
             flexDir={'row'}
             p={2}
             mt={4}
             alignItems={'center'}
+            onClick={() =>{ 
+            navigate('/wallet')
+        }}
+            style={{
+              border: selectOption === '/wallet' ? '1px solid blue' : 'none',
+            }}
           >
             <FontAwesomeIcon icon={faWallet} />
             <Text ml={'10%'} fontWeight={'semibold'} color={'gray.500'}>
               Wallet
             </Text>
           </Card>
-  
+        
           <Card
-            onClick={()=>setTopcard({name:'Bank',logo:faBank})}
             display={'flex'}
             flexDir={'row'}
-            border={topCard.name==="Bank" ? '1px solid blue' : "none"}
             p={2}
             mt={4}
             alignItems={'center'}
-
+            onClick={() =>{ 
+            navigate('/bank')
+        }}
+            style={{
+              border: selectOption === '/bank' ? '1px solid blue' : 'none',
+            }}
           >
             <FontAwesomeIcon icon={faBuildingColumns} />
             <Text ml={'10%'} fontWeight={'semibold'} color={'gray.500'}>
